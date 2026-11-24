@@ -140,6 +140,13 @@ class StaticSiteTests(unittest.TestCase):
         self.assertFalse(any(a.get("href", "").startswith("/") for _, a in Document(html).tags))
         self.assertIn("The website owner may receive Z.ai credits", html)
 
+    def test_streamlit_body_omits_native_heading_and_introduction(self):
+        offer = load_offers()[0]
+        html = render_article(offer, internal_links=False, include_heading=False)
+        self.assertNotIn("<h1>", html)
+        self.assertNotIn(offer["introduction"], html)
+        self.assertIn("Campaign terms verified", html)
+
     def test_crawlers_and_accessible_structure(self):
         robots = robotparser.RobotFileParser()
         robots.parse((self.root / "robots.txt").read_text().splitlines())

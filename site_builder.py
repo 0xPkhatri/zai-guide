@@ -77,8 +77,9 @@ def template_environment():
     return env
 
 
-def render_article(offer, internal_links=True):
-    return template_environment().get_template("article.html").render(offer=offer, internal_links=internal_links)
+def render_article(offer, internal_links=True, include_heading=True):
+    return template_environment().get_template("article.html").render(
+        offer=offer, internal_links=internal_links, include_heading=include_heading)
 
 
 def build_site(base_url, output=None, preview=False):

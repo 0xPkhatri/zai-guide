@@ -1,7 +1,7 @@
 <article>
   <header>
-    <h1>{{ offer.heading }}</h1>
-    <p class="intro">{{ offer.introduction }}</p>
+    {% if include_heading|default(true) %}<h1>{{ offer.heading }}</h1>
+    <p class="intro">{{ offer.introduction }}</p>{% endif %}
     <p class="dates">{% if offer.publicly_published %}Published <time datetime="{{ offer.publication_date }}">{{ offer.publication_date|readable_date }}</time> · {% endif %}Campaign terms verified <time datetime="{{ offer.last_verified_date }}">{{ offer.last_verified_date|readable_date }}</time></p>
   </header>
   <section class="offer" aria-label="Discount summary">

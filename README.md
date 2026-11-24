@@ -93,7 +93,7 @@ Hosting status codes and external visitor access must be verified after deployme
 .venv/bin/python -m unittest discover -s tests -v
 ```
 
-Eleven tests cover the full initial article HTML and all FAQs without JavaScript,
+Twelve tests cover the full initial article HTML and all FAQs without JavaScript,
 unique metadata, canonical/OG/schema origins, real HTTP 200/404 and permanent slash
 redirects, internal links, sitemap, all three requested crawlers, semantic landmarks,
 skip links, labelled sections and sponsored attributes on both discount links.

@@ -31,7 +31,9 @@ st.html("""
 """)
 
 st.html("<style>" + (ROOT / "assets/styles.css").read_text() + "</style>")
-st.html(render_article(offer, internal_links=False))
+st.title(offer["heading"])
+st.text(offer["introduction"])
+st.html(render_article(offer, internal_links=False, include_heading=False))
 
 if "--manage" in sys.argv:
     with st.sidebar:
