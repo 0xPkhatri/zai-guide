@@ -1,4 +1,5 @@
 import json
+import re
 from functools import partial
 from html.parser import HTMLParser
 from http.server import ThreadingHTTPServer
@@ -38,6 +39,9 @@ class StaticSiteTests(unittest.TestCase):
         titles, descriptions = set(), set()
         for page in self.root.rglob("*.html"):
             html = page.read_text()
+            if re.fullmatch(r"google[a-f0-9]+\.html", page.name):
+                self.assertEqual(html.strip(), f"google-site-verification: {page.name}")
+                continue
             doc = Document(html)
             self.assertEqual(sum(t == "h1" for t, _ in doc.tags), 1)
             self.assertNotIn("noindex", html.lower())
@@ -146,6 +150,14 @@ class StaticSiteTests(unittest.TestCase):
         self.assertNotIn("<h1>", html)
         self.assertNotIn(offer["introduction"], html)
         self.assertIn("Campaign terms verified", html)
+
+    def test_google_verification_file_is_preserved_at_export_root(self):
+        from site_builder import ROOT
+        name = "googleee8ffdbee8236973.html"
+        self.assertEqual((self.root / name).read_bytes(), (ROOT / name).read_bytes())
+        xml = (self.root / "sitemap.xml").read_text()
+        self.assertNotIn(name, xml)
+        self.assertEqual(verify_export(self.root), "https://savings.test")
 
     def test_crawlers_and_accessible_structure(self):
         robots = robotparser.RobotFileParser()

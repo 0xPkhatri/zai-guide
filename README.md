@@ -93,7 +93,7 @@ Hosting status codes and external visitor access must be verified after deployme
 .venv/bin/python -m unittest discover -s tests -v
 ```
 
-Twelve tests cover the full initial article HTML and all FAQs without JavaScript,
+Thirteen tests cover the full initial article HTML and all FAQs without JavaScript,
 unique metadata, canonical/OG/schema origins, real HTTP 200/404 and permanent slash
 redirects, internal links, sitemap, all three requested crawlers, semantic landmarks,
 skip links, labelled sections and sponsored attributes on both discount links.
@@ -126,3 +126,19 @@ verified, so no pricing table is shown. The ID is not labelled as a tested coupo
 Keep disclosure visible and sponsored attributes on commercial links. Update the
 privacy page if adding forms, analytics, advertising, cookies or other processing.
 Add verified author/contact details when supplied; none are fabricated.
+
+## Google Search Console verification
+
+The original `googleee8ffdbee8236973.html` file is kept at the repository root
+and copied unchanged to the root of each static export. It is not an article and
+is omitted from the sitemap. Keep it deployed to retain verification.
+
+Adding a file to GitHub does not serve it at the root of a Streamlit Community
+Cloud app. Streamlit's supported static route is `/app/static/`, whereas Google
+requests `/googleee8ffdbee8236973.html` for the current root URL-prefix property.
+The static export supports that path on an ordinary static host. No modification
+of Streamlit's installed frontend files or verification meta tag in the article
+body has been added. Neither would be a supported root-file solution here.
+
+The Streamlit property is not verified by this change. Search Console ownership
+verification is separate from eligibility for ordinary search indexing.

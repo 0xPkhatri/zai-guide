@@ -129,6 +129,14 @@ def build_site(base_url, output=None, preview=False):
         title="Page not found", description="This page does not exist.", canonical=None,
         kind="404", site_name=SITE_NAME, offers=offers, schema=None, not_found=True))
     write("styles.css", (ROOT / "assets/styles.css").read_text())
+    # Google requires these files unchanged at the property's root URL.
+    for verification in ROOT.glob("google*.html"):
+        if not re.fullmatch(r"google[a-f0-9]+\.html", verification.name):
+            continue
+        content = verification.read_text()
+        if content.strip() != f"google-site-verification: {verification.name}":
+            raise ValueError(f"Unexpected Google verification content: {verification.name}")
+        write(verification.name, content)
     write("robots.txt", f"User-agent: *\nAllow: /\n\nSitemap: {base_url}/sitemap.xml\n")
     xml = Element("urlset", xmlns="http://www.sitemaps.org/schemas/sitemap/0.9")
     for path in routes:

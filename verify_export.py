@@ -29,6 +29,10 @@ def verify_export(directory=ROOT / "dist"):
     origin = normalize_url(manifest["base_url"])
     for path in directory.rglob("*.html"):
         html = path.read_text()
+        if re.fullmatch(r"google[a-f0-9]+\.html", path.name) and path.parent == directory:
+            if html.strip() != f"google-site-verification: {path.name}":
+                raise ValueError(f"Invalid Google verification file: {path.name}")
+            continue
         tags = Tags(html).items
         for url in re.findall(r'https?://[^\s<>"\\]+', html):
             # External official sources and referral destinations remain allowed.
