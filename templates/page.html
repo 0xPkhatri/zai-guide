@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ title }}</title>
+  <meta name="description" content="{{ description }}">
+  {% if canonical %}<link rel="canonical" href="{{ canonical }}">{% endif %}
+  <meta property="og:title" content="{{ title }}">
+  <meta property="og:description" content="{{ description }}">
+  <meta property="og:type" content="{{ 'article' if kind == 'article' else 'website' }}">
+  {% if canonical %}<meta property="og:url" content="{{ canonical }}">{% endif %}
+  <meta property="og:site_name" content="{{ site_name }}">
+  {% if offer %}{% if offer.publicly_published %}<meta property="article:published_time" content="{{ offer.publication_date }}">{% endif %}
+  <meta property="article:modified_time" content="{{ offer.last_verified_date }}">{% endif %}
+  <link rel="stylesheet" href="/styles.css">
+  {% if schema %}<script type="application/ld+json">{{ schema|tojson }}</script>{% endif %}
+</head>
+<body>
+  <a class="skip" href="#main">Skip to content</a>
+  <div class="site-shell">
+    <header class="site-header"><a class="brand" href="/">{{ site_name }}</a>
+      <nav aria-label="Main navigation"><a href="/offers/">Offers</a><a href="/about/">About</a></nav>
+    </header>
+    <main id="main">
+    {% if kind == 'article' %}{% include "article.html" %}
+    {% elif kind in ['home', 'offers'] %}
+      <h1>{{ 'Software savings, explained' if kind == 'home' else 'Software discount offers' }}</h1>
+      <p>Independent notes on subscription savings: what an offer provides, who qualifies, and what to check before paying.</p>
+      {% for item in offers %}<section class="listing"><p class="small">{{ item.category }}</p>
+        <h2><a href="{{ item.path }}">{{ item.page_title }}</a></h2>
+        <p>{{ item.offer_description }} for an eligible first subscription. Terms checked {{ item.last_verified_date|readable_date }}.</p>
+      </section>{% endfor %}
+      <p class="small">Offer links may earn credits for the website owner. <a href="/affiliate-disclosure/">How this works</a>.</p>
+    {% elif kind == 'about' %}
+      <h1>About this guide</h1>
+      <p>Software Savings Notes is an independent project for people comparing software subscription offers. It is not operated by Z.ai.</p>
+      <h2>How offers are checked</h2><p>Each guide links to official sources and shows the date those sources were checked. Checkout prices, account eligibility and campaign availability can change between checks.</p>
+      <p>We distinguish invitation links from checkout coupon codes, explain important exclusions, and omit prices we cannot verify. Source checks are not purchase tests.</p>
+      <h2>Corrections</h2><p>If the checkout differs from a guide, use the current official terms and contact the product’s support before paying. Dates are updated only after a source review.</p>
+      <p><a href="/affiliate-disclosure/">Read how offer links support this project</a>.</p>
+    {% elif kind == 'disclosure' %}
+      <h1>Affiliate and referral disclosure</h1>
+      <p>This website contains invitation links. The owner may receive Z.ai credits when an eligible customer purchases through a link, subject to the campaign’s reward conditions.</p>
+      <p>These credits support the project. They are not a promise that every visitor qualifies for a discount. Read the offer’s exclusions and confirm the final amount before paying.</p>
+      <p>The site is independent of Z.ai. No paid reviews, customer ratings or checkout verification are claimed here.</p>
+      <p><a href="/offers/zai-discount/">Read the Z.ai discount guide</a>.</p>
+    {% elif kind == 'privacy' %}
+      <h1>Privacy policy</h1>
+      <p>This static site has no account registration, forms, advertising scripts or analytics added by this project. It does not set application cookies or store visitor details in a database.</p>
+      <h2>Hosting and external links</h2><p>The hosting provider may process ordinary request information such as IP addresses and access logs to serve and secure the site. Its policies apply to that processing.</p>
+      <p>Following an offer link takes you to Z.ai, which may record the invitation and apply its own cookies and privacy policy. This site does not handle your Z.ai account or payment details.</p>
+      <p>This policy describes the static public site. A separately hosted Streamlit management app and its provider may have different data processing.</p>
+    {% else %}<h1>Page not found</h1><p>This address does not match a published guide. <a href="/offers/">Browse existing offers</a>.</p>{% endif %}
+    </main>
+    <footer class="site-footer"><a href="/affiliate-disclosure/">Disclosure</a><a href="/privacy-policy/">Privacy</a><span>Independent software guides</span></footer>
+  </div>
+</body>
+</html>

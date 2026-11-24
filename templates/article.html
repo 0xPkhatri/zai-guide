@@ -1,0 +1,37 @@
+<article>
+  <header>
+    <h1>{{ offer.heading }}</h1>
+    <p class="intro">{{ offer.introduction }}</p>
+    <p class="dates">{% if offer.publicly_published %}Published <time datetime="{{ offer.publication_date }}">{{ offer.publication_date|readable_date }}</time> · {% endif %}Campaign terms verified <time datetime="{{ offer.last_verified_date }}">{{ offer.last_verified_date|readable_date }}</time></p>
+  </header>
+  <section class="offer" aria-label="Discount summary">
+    <dl>
+      <div><dt>Offer</dt><dd>{{ offer.offer_description }}</dd></div>
+      <div><dt>Eligibility</dt><dd>{{ offer.eligibility_summary }}</dd></div>
+      <div><dt>Invitation ID</dt><dd><code>{{ offer.invitation_id }}</code></dd></div>
+    </dl>
+    <a class="button" href="{{ offer.offer_url }}" rel="sponsored noopener noreferrer">{{ offer.button_label }}</a>
+    <p class="small">The invitation ID is not verified as a standalone coupon code to enter at checkout.</p>
+  </section>
+  <p class="small disclosure">{{ offer.affiliate_disclosure }}{% if internal_links|default(true) %} <a href="/affiliate-disclosure/">Read the disclosure</a>.{% endif %}</p>
+  <section aria-labelledby="how"><h2 id="how">{{ offer.section_headings.how }}</h2>
+    <ol>{% for step in offer.steps %}<li>{{ step }}</li>{% endfor %}</ol>
+  </section>
+  <section aria-labelledby="eligibility"><h2 id="eligibility">{{ offer.section_headings.eligibility }}</h2>
+    <p class="small">Status: {{ offer.offer_status }}.</p>
+    <ul>{% for condition in offer.eligibility_conditions %}<li>{{ condition }}</li>{% endfor %}</ul>
+    <p>Source: <a href="{{ offer.official_sources[0].url }}">{{ offer.official_sources[0].title }}</a>.</p>
+  </section>
+  <section aria-labelledby="pricing"><h2 id="pricing">{{ offer.section_headings.pricing }}</h2>
+    {% for note in offer.pricing_notes %}<p>{{ note }}</p>{% endfor %}
+    <p>See the <a href="{{ offer.official_sources[1].url }}">official plan overview</a> for plan details.</p>
+  </section>
+  <section aria-labelledby="faqs"><h2 id="faqs">{{ offer.section_headings.faqs }}</h2>
+    {% for faq in offer.faqs %}<h3>{{ faq.question }}</h3><p>{{ faq.answer }}</p>{% endfor %}
+  </section>
+  <p>If this is your first eligible subscription, <a href="{{ offer.offer_url }}" rel="sponsored noopener noreferrer">get 10% off GLM Coding Plan</a> and confirm the savings at checkout.</p>
+  {% if offer.related_guides and internal_links|default(true) %}<aside><h2>Related guides</h2><ul>
+    {% for guide in offer.related_guides %}<li><a href="{{ guide.path }}">{{ guide.title }}</a></li>{% endfor %}
+  </ul></aside>{% endif %}
+  <footer class="article-footer"><p class="small">Verified dates reflect checks of published sources, not a live test of this invitation ID or a guarantee of account eligibility.</p></footer>
+</article>
